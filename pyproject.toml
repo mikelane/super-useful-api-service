@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "super-useful-api-service"
+version = "0.1.0"
+description = "The business logic for the super useful api"
+authors = ["Mike Lane <mikelane@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+boto3 = "^1.24.46"
+pydantic = {extras = ["email"], version = "^1.9.1"}
+aws-lambda-powertools = "^1.27.0"
+requests = "^2.28.1"
+loguru = "^0.6.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+mypy = "^0.971"
+black = "^22.6.0"
+isort = "^5.10.1"
+pytest-cov = "^3.0.0"
+
+[tool.mypy]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.black]
+line-length = 109
+skip-string-normalization = true
+include = '.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+force_grid_wrap = 2
+
+[tool.pytest.ini_options]
+minversion = "7.1"
+addopts = ["-ra", "-vvv", "-s"]
+log_cli=true
+log_level="DEBUG"
+testpaths = ["tests"]
+python_functions = ["test_*"]
+markers = ["integration: marks tests as integration tests (deselect with '-m \"not slow\"')"]
+filterwarnings = [
+    # Change warnings into errors.
+    'error',
+    # pytest-black raises some pytest errors we don't care about. Ignore those.
+    'ignore::pytest.PytestRemovedIn8Warning',
+    'ignore::pytest.PytestDeprecationWarning',
+    'ignore:BlackItem is an Item subclass and should not be a collector'
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
